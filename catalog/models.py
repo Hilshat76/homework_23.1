@@ -35,7 +35,7 @@ class Product(models.Model):
         null=True,
     )
     photo = models.ImageField(
-        upload_to="products_photo/",
+        upload_to="catalog/products_photo",
         blank=True,
         null=True,
         verbose_name="Превью",
