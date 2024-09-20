@@ -2,7 +2,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-7 py-4">
-          <h4>Ситилинк</h4>
+          <h4>Ситилинкин</h4>
           <p class="text-body-secondary">Cеть магазинов электроники и бытовой техники.</p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
@@ -10,6 +10,8 @@
           <ul class="list-unstyled">
             <li><a href="{% url 'catalog:home' %}" class="text-white">Каталог</a></li>
             <li><a href="{% url 'catalog:contacts' %}" class="text-white">Контакты</a></li>
+
+            <li><a href="{% url 'article:articles_list' %}" class="text-white">Статьи</a></li>
           </ul>
         </div>
       </div>

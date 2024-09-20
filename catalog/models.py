@@ -45,7 +45,7 @@ class Product(models.Model):
         Category,
         on_delete=models.SET_NULL,
         verbose_name="Категория",
-        help_text="Введите категорию продукта",
+        help_text="Выберите категорию продукта",
         null=True,
         blank=True,
         related_name="products",
@@ -54,12 +54,14 @@ class Product(models.Model):
         verbose_name="Цена", help_text="Введите стоимость продукта"
     )
     created_at = models.DateField(
+        auto_now_add=True,
         verbose_name="Дата создания",
         blank=True,
         null=True,
         help_text="Укажите дату создания",
     )
     updated_at = models.DateField(
+        auto_now=True,
         verbose_name="Дата последнего изменения",
         blank=True,
         null=True,
