@@ -68,7 +68,6 @@ class Product(models.Model):
         help_text="Укажите дату последнего изменения",
     )
 
-
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
@@ -76,3 +75,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, related_name='versions', on_delete=models.CASCADE, verbose_name="Продукт")
+    version_number = models.IntegerField(verbose_name="Номер версии")
+    version_name = models.CharField(verbose_name="Название версии", max_length=150)
+    is_active = models.BooleanField(verbose_name="Признак текущей версии")
+
+    class Meta:
+        verbose_name = "Версия"
+        verbose_name_plural = "Версии"
+
+    def __str__(self):
+        return f'{self.version_number} - {self.version_name}'

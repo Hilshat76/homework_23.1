@@ -14,38 +14,35 @@
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-            {% for product in object_list %}
+            {% for item in products_with_versions %}
             <div class="col">
                 <div class="card shadow-sm">
-                    <img src="{{ product.photo | media_filter }}" class="card-img-top"
+                    <img src="{{ item.product.photo | media_filter }}" class="card-img-top"
                          style="height: 200px; width: auto; object-fit: contain;">
                     <div class="card-body">
-                        <p class="card-text">{{ product.name }}</p>
-                        <p ALIGN="justify"><strong>Описание: </strong>{{ product.description | truncatechars:100}}</p>
+                        <p class="card-text">{{ item.product.name }}</p>
+                        <p ALIGN="justify"><strong>Описание: </strong>{{ item.product.description | truncatechars:100}}
+                        </p>
+
+                        {% if item.active_version %}
+                        <p><strong>Текущая версия:</strong> {{ item.active_version.version_name }}</p>
+                        {% else %}
+                        <p><strong>Текущая версия:</strong> Нет активной версии</p>
+                        {% endif %}
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-
-                                <style>
-                                    .btn {
-                                        margin-right: 1px; /* Отступ справа */
-                                    }
-
-                                    .btn:last-child {
-                                        margin-right: 0; /* Убираем отступ у последней кнопки */
-                                    }
-                                </style>
-
-
                                 <div class="button-box">
-                                    <a class="btn btn-primary" href="{% url 'catalog:products_detail' product.pk %}"
+                                    <a class="btn btn-primary"
+                                       href="{% url 'catalog:products_detail' item.product.pk %}"
                                        role="button">Посмотреть</a>
-                                    <a class="btn btn-primary" href="{% url 'catalog:products_update' product.pk %}"
-                                       role="button">Редатировать</a>
-                                    <a class="btn btn-primary" href="{% url 'catalog:products_delete' product.pk %}"
+                                    <a class="btn btn-primary"
+                                       href="{% url 'catalog:products_update' item.product.pk %}"
+                                       role="button">Редактировать</a>
+                                    <a class="btn btn-primary"
+                                       href="{% url 'catalog:products_delete' item.product.pk %}"
                                        role="button">Удалить</a>
                                 </div>
-
                             </div>
                         </div>
                     </div>

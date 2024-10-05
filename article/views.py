@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from article.forms import ArticleForm
 from article.models import Article
 from pytils.translit import slugify
 
 
 class ArticleCreateView(CreateView):
     model = Article
-    fields = '__all__'
+    form_class = ArticleForm
     success_url = reverse_lazy('article:articles_list')
 
     def form_valid(self, form):
@@ -34,7 +36,7 @@ class ArticleDetailView(DetailView):
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = '__all__'
+    form_class = ArticleForm
 
     def get_success_url(self):
         # Получаем текущий объект статьи
