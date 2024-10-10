@@ -1,5 +1,9 @@
 from django.db import models
 
+from users.models import User
+
+NULLABLE = {"blank": True, "null": True}
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -67,6 +71,7 @@ class Product(models.Model):
         null=True,
         help_text="Укажите дату последнего изменения",
     )
+    owner = models.ForeignKey(User, verbose_name="Владелец", on_delete=models.SET_NULL, **NULLABLE)
 
     class Meta:
         verbose_name = "Продукт"

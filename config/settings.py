@@ -1,5 +1,8 @@
-
+import os
+from dotenv import load_dotenv
 from pathlib import Path
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,6 +22,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'article',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -49,15 +53,14 @@ TEMPLATES = [
     },
 ]
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Catalog',
-        'USER': 'postgres',
-        'PASSWORD': 'ruslanelvira2015',
+        'NAME': 'catalog',
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '5432',
     }
 }
 
@@ -84,7 +87,6 @@ USE_I18N = True
 
 USE_TZ = False
 
-
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
@@ -97,8 +99,20 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'hilshat76@mail.ru'
-EMAIL_HOST_PASSWORD = '5proezdka-Odometr-fust'
-EMAIL_USER_SSL = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('MY_EMAIL')
+EMAIL_HOST_PASSWORD = os.getenv('MY_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USER_SSL = False
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

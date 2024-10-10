@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -18,7 +19,8 @@ class ProductListView(ListView):
 
         # Пройдитесь по каждому продукту и извлеките его активную версию
         for product in self.object_list:
-            active_version = product.versions.filter(is_active=True).first()  # Используйте "versions" вместо "version_set"
+            active_version = product.versions.filter(
+                is_active=True).first()  # Используйте "versions" вместо "version_set"
             products_with_versions.append({
                 'product': product,
                 'active_version': active_version
@@ -32,7 +34,10 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    login_url = "users:login"
+    redirect_field_name = "redirect_to"
+
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
@@ -50,15 +55,27 @@ class ProductCreateView(CreateView):
         context_data = self.get_context_data()
         formset = context_data['formset']
         if form.is_valid() and formset.is_valid():
-            self.object = form.save()
+            self.object = form.save(commit=False)  # пока не сохраняем данные в базе
+            self.object.owner = self.request.user  # привязываем текущего пользователя к продукту
+            self.object.save()  # сохраняем данные в базе
+
             formset.instance = self.object
             formset.save()
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = "users:login"
+    redirect_field_name = "redirect_to"
+
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
@@ -84,7 +101,10 @@ class ProductUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = "users:login"
+    redirect_field_name = "redirect_to"
+
     model = Product
     success_url = reverse_lazy('catalog:home')
 
