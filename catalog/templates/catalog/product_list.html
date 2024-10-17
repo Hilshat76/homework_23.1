@@ -38,12 +38,19 @@
                                     <a class="btn btn-primary"
                                        href="{% url 'catalog:products_detail' item.product.pk %}"
                                        role="button">Посмотреть</a>
+
+                                    {% if perms.catalog.can_edit_is_active and perms.catalog.can_edit_description and perms.catalog.can_edit_category or user == item.product.owner %}
                                     <a class="btn btn-primary"
                                        href="{% url 'catalog:products_update' item.product.pk %}"
                                        role="button">Редактировать</a>
+                                    {% endif %}
+
+                                    {% if item.product.owner == user or user.is_superuser %}
                                     <a class="btn btn-primary"
                                        href="{% url 'catalog:products_delete' item.product.pk %}"
                                        role="button">Удалить</a>
+                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>

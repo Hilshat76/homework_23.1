@@ -72,11 +72,18 @@ class Product(models.Model):
         help_text="Укажите дату последнего изменения",
     )
     owner = models.ForeignKey(User, verbose_name="Владелец", on_delete=models.SET_NULL, **NULLABLE)
+    is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ("category", "name",)
+        permissions = [
+            ("can_edit_is_active", "Can edit is_active"),
+            ("can_edit_description", "Can edit description"),
+            ("can_edit_category", "Can edit category")
+        ]
+
 
     def __str__(self):
         return self.name

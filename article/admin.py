@@ -1,9 +1,6 @@
 from django.contrib import admin
-from article.models import User, Article
+from article.models import Article
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'country')
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):

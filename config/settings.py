@@ -1,8 +1,8 @@
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
 from pathlib import Path
 
-load_dotenv()
+# load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,8 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog',
-    'article',
     'users',
+    'article',
+
 ]
 
 MIDDLEWARE = [
@@ -57,8 +58,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'catalog',
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'USER': 'postgres',
+        'PASSWORD': 'ruslanelvira2015',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -105,8 +106,8 @@ if DEBUG:
 
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv('MY_EMAIL')
-EMAIL_HOST_PASSWORD = os.getenv('MY_PASSWORD')
+EMAIL_HOST_USER = 'hilshat76@mail.ru'
+EMAIL_HOST_PASSWORD = 'YyhuJyHf15bcpw4TEBpd'
 EMAIL_USE_TLS = True
 EMAIL_USER_SSL = False
 
